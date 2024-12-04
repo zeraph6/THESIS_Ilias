@@ -1,0 +1,152 @@
+%%%  Author: Karima Echihabi
+%%%  Document: Template for Thesis
+%%%  Last Modified: March 18th, 2021
+
+
+\documentclass[12pt]{thesis}
+
+\usepackage{amsmath}  % For math environments like align, equation
+\usepackage{amsthm}   % For theorem, definition, etc.
+\usepackage{amssymb}
+\usepackage{graphicx}
+\newtheorem{definition}{Definition}
+\definecolor{myred}{RGB}{189, 52, 67}
+\definecolor{mygreen}{RGB}{19, 136, 8}
+\definecolor{myblue}{RGB}{16, 52, 166}
+\usepackage{float}% http://ctan.org/pkg/float
+
+\newcommand{\here}[1]{{\bf [[#1]]}}
+\newcommand{\karima}[1]{{\color{blue} #1}\normalcolor}
+\newcommand{\ilias}[1]{{\color{mygreen} #1}\normalcolor}
+\newcommand{\themis}[1]{{\color{red} #1}\normalcolor}
+
+
+\usepackage{setspace}  % For line spacing
+
+%\pagenumbering{gobble}
+
+
+\usepackage{tabularx}    % For tables that adjust column widths
+\usepackage{booktabs}    % For better table formatting
+\usepackage{caption}     % For caption settings
+\usepackage{array}       % For defining new column types
+\usepackage{pdflscape}   % For rotating tables (optional)
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+% \usepackage{algorithm}
+\usepackage{algorithmic}
+
+\usepackage{algpseudocode}
+% \usepackage{amsmath}
+% \usepackage{setspace}
+% \usepackage{algorithm}
+% \usepackage{algorithmic}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+
+% \usepackage[ruled,vlined]{algorithm2e}
+% \RestyleAlgo{boxruled}
+% \usepackage[ruled,vlined,linesnumbered,noend]{algorithm2e}
+% \PassOptionsToPackage{noend}{algpseudocode}
+% \usepackage{algpseudocode}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% *** Adjust the following settings as desired. ***
+\setcounter{tocdepth}{2}
+
+%% Make each page fill up the entire page.
+\flushbottom
+
+
+%%%%%%%%%%%%      MAIN  DOCUMENT      %%%%%%%%%%%%
+
+\begin{document}
+\graphicspath{{../img/misc/}}
+%% This sets the page style and numbering for preliminary sections.
+\begin{preliminary}
+%% This generates the ti
+
+%Create a one-page PDF document for the front cover page
+%\includepdf[pages=-]{../img/page.pdf}
+
+\begin{titlepage}
+    \centering
+    \vspace*{3cm} % Adjust vertical space
+
+    {\Huge \textbf{Thesis Manuscript}\\}
+    \vspace{1.5cm}
+
+    {\LARGE Scalable High-Dimensional Vector Similarity Search\\}
+
+    \vfill
+
+    {\Large \textbf{Presented by:} \\ \Large Ilias Azizi}
+
+    \vspace{1.5cm}
+
+    {\Large University Mohammed VI Polytechnic\\
+    College of Computing\\
+    Morocco}
+    \vspace{1cm}
+
+    {\Large University Paris Cité\\
+    Laboratoire d'Informatique Paris Descartes\\
+    France}
+    \vspace{1cm}
+
+    {\Large \textbf{2023 - 2024}\\}
+    
+\end{titlepage}
+
+
+\clearpage
+
+\begin{abstract}
+The unprecedented increase in high-dimensional data across sectors like agriculture, healthcare, cybersecurity, seismology, and finance has led to an urgent demand for sophisticated analytical systems capable of processing and exploring large datasets. These datasets, often reaching terabytes in size and involving hundreds or thousands of dimensions, require advanced tools to detect valuable patterns and derive insights.
+
+Vector search is a fundamental operation in numerous data science applications, such as data integration, recommendation systems, large language models, and information retrieval. In these tasks, data such as images, text, or videos are represented as vectors in a high-dimensional space, and the objective is to find the closest object(s) to a query within large collections of vectors. However, as these collections grow exponentially in both size and dimensionality, performing such searches becomes increasingly complex. Although both exact and approximate vector search methods have been developed, they struggle to efficiently scale to the size of today's massive datasets. Traditional techniques, including tree-based and hash-based approaches, have become impractical for handling large-scale vector data collections.
+%containing millions or even billions of high-dimensional vectors.
+
+In recent years, graph-based methods have emerged as a promising alternative for managing large-scale vector search tasks. These methods construct a graph where each node represents a data object, and edges link the most similar objects, leading to improved query efficiency. Nevertheless, despite their advantages, existing graph-based approaches face critical challenges, including (i) a lack of indexing scalability on large datasets, and (ii) low query accuracy on hard datasets and query workloads.
+
+%including (i) scalability when handling vast data collections and (ii) maintaining accuracy on difficult datasets.
+
+This thesis presents several key contributions: (i) the design of a novel scalable approach for in-memory, ng-approximate graph-based vector search that efficiently indexes and searches large datasets by leveraging both tree and graph index structures; (ii) an exhaustive evaluation of state-of-the-art graph-based methods on large-scale datasets, along with the introduction of a new taxonomy that classifies graph-based vector search techniques according to five key paradigms; (iii) a novel merging strategy that combines tree and graph indexes to achieve high performance in both latency- and throughput-optimized settings; and (iv) the development of a new graph-based method that optimizes the indexing and searching of large-scale vector datasets; 
+
+Through these contributions, this thesis aims to advance the scalability and accuracy of graph-based vector search algorithms in large-scale data collections, laying a strong foundation for further research on graph structures for vector search.
+
+\end{abstract}
+
+%\begin{acknowledgements}
+	
+%Add acknowledgements here.
+
+%\end{acknowledgements}
+
+\include{tex/ackn}
+
+\tableofcontents
+
+\end{preliminary}
+
+
+\listoffigures
+\listoftables
+
+\include{introduction}
+\include{problem}
+\include{related}
+\include{graphfamily}
+\include{elpis}
+\include{elpis2}
+\include{oigas}
+\include{conclusion}
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{unsrt}
+\bibliography{ref,pargis,parisinmemory,icde-tutorial,thesis}  
+
+
+%Create a one-page PDF document for the back cover page
+%\includepdf[page=-]{backcover}
+
+
+\end{document}

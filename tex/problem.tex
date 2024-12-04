@@ -1,0 +1,118 @@
+\graphicspath{{../img/problem/}}
+\chapter{Preliminaries}
+\label{chapter:problem}
+
+\section{Introduction}
+The exponential growth of high-dimensional vector across various domains, including medicine, cybersecurity, and e-commerce, has intensified the need for efficient data analysis and retrieval. In this context, vector search, a core operation used in applications such as recommendation systems, classification, and clustering, becomes a critical bottleneck. With datasets often consisting of millions or billions of vectors in high-dimensional spaces, efficiently finding the nearest neighbors (i.e., the most similar objects to a given query) has emerged as a fundamental challenge.
+
+In this chapter, we provide definitions for the different flavors of vector search, including data type, similarity measures, queries, and methods. 
+\clearpage
+
+\section{Definitions}
+\label{sec:definitions}
+
+\subsection{Data Types}
+In the context of similarity search, complex objects are typically represented as points in an \(d\)-dimensional space, often referred to as vectors, thus vector search. 
+
+ A \textbf{vector} is an element in a \(d\)-dimensional real space, represented as \(V = [v_1, v_2, \dots, v_d] \in \mathbb{R}^d\), where each \(v_i\) is a component corresponding to a specific feature or attribute. In similarity search, each object from a dataset \(S = \{V_1, V_2, \dots, V_n\}\) is mapped to a vector in \(\mathbb{R}^d\), with each vector \(V\) representing an object ~\cite{vector}.
+
+%\ilias{add embed       dings vs learned embeddings}
+
+Various methods can be used to map objects into vectors, depending on the type of data being processed. Recently, machine learning techniques such as CNNs~\cite{cnn,cnn1}, RNNs~\cite{rnn,rnn1}, Graph Neural Networks ~\cite{gnn,gnn1}, and, more recently, transformers~\cite{transf,transf1,transf2,transf3}, have been widely used to represent objects in vectorial space by learning embeddings that capture the underlying features of these objects. These learned embeddings often provide richer and more flexible representations, adapting to the complexity of the data~\cite{lemb,lemb1}.
+
+For instance, in image search, traditional methods relied on handcrafted descriptors like SIFT~\cite{sift,sift1}, HOG~\cite{hog}, or SURF~\cite{surf}, which extracted specific visual features (e.g., edges, corners, textures) to represent images as feature vectors. However, modern deep learning models, particularly transformers and  convolutional neural networks~\cite{cnn,cnn1, transf1,transf2}, have replaced these descriptors by automatically learning hierarchical feature representations that are more robust to variations in scale, lighting, and orientation~\cite{lemb1,cnn2,lemb,transf}. This shift has dramatically improved the performance of similarity search tasks in image retrieval~\cite{amazon,faiss,nsg,aumuller2017ann}.
+
+Similarly, in natural language processing (NLP), traditional approaches represented text using techniques like bag-of-words or TF-IDF, which lacked semantic understanding \cite{Manning2008}. With the advent of word embeddings such as Word2Vec \cite{Mikolov2013}, GloVe \cite{Pennington2014}, and more advanced transformer-based models like BERT \cite{Devlin2019} and GPT \cite{Radford2018}, text is now encoded into dense vector representations that capture semantic relationships, allowing for more accurate similarity searches based on meaning rather than mere word frequency
+
+In the case of graph-structured data, Graph Neural Networks (GNNs) have gained popularity for encoding nodes and their relationships into vectors that can be used for tasks such as link prediction, node classification, and graph similarity search \cite{Scarselli2009, Kipf2017, Hamilton2017}. These learned representations take into account both node features and graph topology, outperforming traditional handcrafted approaches.
+
+Compared to earlier methods that relied on predefined descriptors \cite{Lowe2004, Dalal2005}, these machine learning-driven vector representations allow for more dynamic, context-aware similarity search \cite{Krizhevsky2012, Mikolov2013a}, enabling better generalization across different data types and improved performance on large-scale, real-world datasets. The transition to using learned embeddings has not only enhanced the quality of similarity search but also paved the way for dealing with complex, multi-modal datasets \cite{Ngiam2011, Radford2021}, where different data types (e.g., images, text, graphs) can be embedded into a unified vector space for cross-domain retrieval.
+In this thesis, we primarily focus on two common data types: images and data series, both of which are crucial in high-dimensional vector search applications.
+
+\paragraph{Images} 
+Images are represented as multi-dimensional arrays of pixel values, typically corresponding to spatial information in grayscale or RGB channels. For computational tasks, these raw images are often transformed into vectorized forms. This transformation can be achieved through hand-crafted descriptors, such as SIFT \cite{Lowe2004} or HOG \cite{Dalal2005}, which capture specific visual features like edges, textures, and shapes. Alternatively, deep learning models, such as transformers \cite{transf,transf1,transf2,transf3, Vaswani2017} and convolutional neural networks \cite{LeCun1998, Krizhevsky2012,cnn,cnn1,cnn2}, generate embeddings by learning hierarchical feature representations directly from the data. Both approaches enable images to be represented as vectors in a high-dimensional space, facilitating tasks like classification, retrieval, or similarity comparison.
+
+\paragraph{Data Series} 
+
+A data series is a sequence of data points indexed by a continuous domain, such as time, space, depth, or frequency ~\cite{KostasThemisTalkICDE,conf/icde/echihabi2021,Lin2003, Keogh2005}. Formally, a data series can be represented as a vector \( V \in \mathbb{R}^d \), where \(d\) is the dimensionality of the series and each component \(v_i\) corresponds to a specific point in the domain~\cite{Shieh2009}.. Given a dataset \( S = \{V_1, V_2, \dots, V_n\} \) of \(n\) data series vectors in \( \mathbb{R}^d \), the task of similarity search is to find the vectors \(V \in S\) that are most similar to a query vector \( Q \in \mathbb{R}^d \) based on a defined distance measure~ \cite{conf/sigmod/echihabi2020,Palpanas2019,palpanas2015data,Faloutsos1994, Keogh2002}.
+
+\subsection{Distance Measures}
+
+Measuring the \textbf{similarity} or \textbf{dissimilarity} between vectors \(Q\) and \(V\) in the dataset \(S\) is critical for identifying the nearest neighbors. Distance functions quantify how close these vectors are in \(\mathbb{R}^d\), with \textbf{Euclidean distance}~\cite{euclid} being the primary metric of focus in this thesis.
+
+\begin{definition}[Minkowski Distance]
+    The Minkowski distance generalizes multiple distance metrics, defined for vectors \(Q\) and \(V\) in \(\mathbb{R}^d\) as:
+    \begin{equation}
+        \mathcal{D}_p(Q, V) = \left( \sum_{i=1}^{d} |q_i - v_i|^p \right)^{1/p}
+        \label{eq:minkowski_distance}
+    \end{equation}
+    where \(p \geq 1\), and \(q_i\) and \(v_i\) are the \(i\)-th components of vectors \(Q\) and \(V\), respectively. The Minkowski distance encompasses both \textbf{Euclidean} and \textbf{Manhattan} distances, depending on the value of \(p\).
+\end{definition}
+
+\begin{definition}[Euclidean Distance]
+    The Euclidean distance is a special case of the Minkowski distance when \(p = 2\), and is defined as:
+    \begin{equation}
+        \mathcal{D}_E(Q, V) = \sqrt{\sum_{i=1}^{d} (q_i - v_i)^2}
+        \label{eq:euclidean_distance}
+    \end{equation}
+    This metric measures the straight-line (geometric) distance between vectors \(Q\) and \(V\) in \(\mathbb{R}^d\). Euclidean distance is the most widely used metric in high-dimensional similarity search, and it is the focus of this thesis.
+\end{definition}
+
+\begin{definition}[Manhattan Distance]
+    The Manhattan distance, also known as the L1 distance, is another special case of the Minkowski distance when \(p = 1\), and is defined as:
+    \begin{equation}
+        \mathcal{D}_1(Q, V) = \sum_{i=1}^{d} |q_i - v_i|
+        \label{eq:manhattan_distance}
+    \end{equation}
+    This metric sums the absolute differences between the corresponding components of the vectors.
+\end{definition}
+
+\begin{definition}[Cosine Similarity]
+    Cosine similarity measures the cosine of the angle between two vectors \(Q\) and \(V\) in \(\mathbb{R}^d\), and is defined as:
+    \begin{equation}
+        \mathcal{S}_{\text{cosine}}(Q, V) = \frac{Q \cdot V}{\|Q\| \|V\|}
+        \label{eq:cosine_similarity}
+    \end{equation}
+    where \(Q \cdot V\) represents the dot product, and \(\|Q\|\) and \(\|V\|\) are the Euclidean norms of \(Q\) and \(V\). Cosine similarity is commonly used in cases where the orientation of the vectors is more important than their magnitude, such as in text similarity or high-dimensional embeddings.
+\end{definition}
+
+\paragraph{Focus on Euclidean Distance}
+In this thesis, we primarily focus on the \textbf{Euclidean distance} (\(\mathcal{D}_E(Q, V)\)) measure, since it is used extensively in modern
+%for high-dimensional similarity search tasks
+applications~\cite{Indyk1998, Datar2004,vamana,ngt_library,zhang2018visual,spfresh}  because it is simple and computationally efficient~\cite{Arya1998}. For all subsequent discussions, the Euclidean distance will be denoted as \(\mathcal{D}(Q, V)\).
+%, making it a practical choice for large-scale datasetss 
+
+%\section{Similarity Search Problem}
+\section{Problem Statement}
+\label{sec:similarity_search}
+
+In the context of high-dimensional vector search, the similarity search problem involves finding the most similar objects in a dataset \(S = \{V_1, V_2, \dots, V_n\} \subseteq \mathbb{R}^d\) to a given query vector \(Q \in \mathbb{R}^d\), using a distance function \(\mathcal{D}(Q, V)\). This search can be classified into two types: \textbf{exact} and \textbf{approximate}.
+
+\subsection{Exact Similarity Search}
+In exact similarity search, the objective is to retrieve the \(k\)-nearest neighbors (k-NN) of the query \(Q\). The exact solution retrieves a set \(A = \{V_1, V_2, \dots, V_k\} \subseteq S\) such that:
+\begin{equation}
+    \mathcal{D}(Q, V_i) \leq \mathcal{D}(Q, V_j) \quad \forall V_j \in S \setminus A
+    \label{eq:exact_knn}
+\end{equation}
+This ensures that the vectors in \(A\) are the exact closest vectors to \(Q\) according to the distance metric \(\mathcal{D}\), with no error in proximity.
+
+\subsection{Approximate Similarity Search}
+Approximate similarity search aims to trade off some accuracy for faster performance. These methods can be divided into two categories:
+
+\paragraph{Guaranteed Approximation}
+In \(\epsilon\)-approximate search, the result guarantees that the distance between the query \(Q\) and the retrieved vector \(V\) is at most \((1 + \epsilon)\) times the distance to the exact nearest neighbor:
+\begin{equation}
+    \mathcal{D}(Q, V) \leq (1 + \epsilon) \cdot \mathcal{D}(Q, V_{\text{exact}})
+    \label{eq:approx_knn_guarantee}
+\end{equation}
+where \(V_{\text{exact}}\) is the exact nearest neighbor of \(Q\). This guarantee ensures that the error is bounded by the factor \(\epsilon\), offering a controlled approximation with a trade-off between speed and accuracy.
+
+\paragraph{Non-Guaranteed Approximation}
+In non-guaranteed ($ng$) approximate search, there is no strict error bound on the proximity of the retrieved vectors to the query \(Q\). These methods focus on providing fast responses by reducing the computational complexity of the search process, often using heuristic-based approaches to retrieve vectors that are close to \(Q\), but without any formal guarantees on their accuracy. This approach is particularly suited for large-scale datasets where exact or guaranteed approximate searches are computationally expensive.
+
+\paragraph{Focus of this Thesis}
+In this thesis, we primarily focus on \textbf{$ng$-approximate similarity search}, which is effective for large-scale, high-dimensional datasets~\cite{hydra2, aumuller2017ann, conf/icde/echihabi2021,elpis,hnsw,neurips-2021-ann-competition}. The terms \textit{approximate similarity search}, \textit{approximate vector search}, and \textit{$ng$-approximate similarity search} will be used interchangeably throughout this work.
+
+
+\section{Conclusion}
+In the following chapters, we will explore various approximate similarity search methods, with a particular focus on in-memory graph-based approaches. Chapter 3 will introduce different classes of approximate similarity search methods, along with a novel taxonomy for graph-based approaches, outlining new key paradigms. Chapter 4 will present our new approach for single-query search, ELPIS. Chapter 5 will demonstrate how ELPIS can be adapted to optimize throughput and remain competitive in answering multiple queries in parallel across large-scale data collections, using a novel graph-merging strategy. In Chapter 6, we will introduce OIGAS, a graph-based approach designed for efficiently indexing and searching large-scale datasets.

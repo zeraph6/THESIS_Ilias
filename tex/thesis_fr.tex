@@ -1,0 +1,197 @@
+%%%  Author: Karima Echihabi
+%%%  Document: Template for Thesis
+%%%  Last Modified: March 18th, 2021
+\documentclass[12pt]{thesis}
+% Packages pour les langues avec XeLaTeX
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{english}
+\setotherlanguages{french, arabic}
+
+% Polices pour chaque langue
+\newfontfamily\arabicfont[Script=Arabic]{Amiri}
+%\newfontfamily\frenchfont{TeX Gyre Termes} % Ou Times New Roman si disponible
+
+
+
+\usepackage{amsmath}  % For math environments like align, equation
+\usepackage{amsthm}   % For theorem, definition, etc.
+\usepackage{amssymb}
+\usepackage{graphicx}
+\newtheorem{definition}{Definition}
+\definecolor{myred}{RGB}{189, 52, 67}
+\definecolor{mygreen}{RGB}{19, 136, 8}
+\definecolor{myblue}{RGB}{16, 52, 166}
+\usepackage{float}% http://ctan.org/pkg/float
+
+\newcommand{\here}[1]{{\bf [[#1]]}}
+\newcommand{\karima}[1]{{\color{blue} #1}\normalcolor}
+\newcommand{\ilias}[1]{{\color{mygreen} #1}\normalcolor}
+\newcommand{\themis}[1]{{\color{red} #1}\normalcolor}
+
+
+\usepackage{setspace}  % For line spacing
+
+%\pagenumbering{gobble}
+
+
+\usepackage{tabularx}    % For tables that adjust column widths
+\usepackage{booktabs}    % For better table formatting
+\usepackage{caption}     % For caption settings
+\usepackage{array}       % For defining new column types
+\usepackage{pdflscape}   % For rotating tables (optional)
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+% \usepackage{algorithm}
+\usepackage{algorithmic}
+
+\usepackage{algpseudocode}
+% \usepackage{amsmath}
+% \usepackage{setspace}
+% \usepackage{algorithm}
+% \usepackage{algorithmic}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+
+% \usepackage[ruled,vlined]{algorithm2e}
+% \RestyleAlgo{boxruled}
+% \usepackage[ruled,vlined,linesnumbered,noend]{algorithm2e}
+% \PassOptionsToPackage{noend}{algpseudocode}
+% \usepackage{algpseudocode}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% *** Adjust the following settings as desired. ***
+\setcounter{tocdepth}{2}
+
+%% Make each page fill up the entire page.
+\flushbottom
+
+
+\graphicspath{{../img/misc/}}
+%%%%%%%%%%%%      MAIN  DOCUMENT      %%%%%%%%%%%%
+
+
+
+
+% Définition de l'environnement pour le résumé en anglais
+\newenvironment{abstractenglish}{
+    \selectlanguage{english}
+    \chapter*{Abstract}
+    % Si vous souhaitez ajouter le résumé à la table des matières :
+    % \addcontentsline{toc}{chapter}{Abstract}
+    % Autres configurations si nécessaire
+}{
+    % Fin de l'environnement
+}
+
+% Définition de l'environnement pour le résumé en français
+\newenvironment{abstractfrench}{
+    \selectlanguage{french}
+    \chapter*{Résumé}
+    % \addcontentsline{toc}{chapter}{Résumé}
+}{
+    % Fin de l'environnement
+}
+
+% Définition de l'environnement pour le résumé en arabe
+\newenvironment{abstractarabic}{
+    \selectlanguage{arabic}
+    \chapter*{\textarabic{ملخص}}
+    % \addcontentsline{toc}{chapter}{\textarabic{ملخص}}
+}{
+    % Fin de l'environnement
+}
+\begin{document}
+
+%% This sets the page style and numbering for preliminary sections.
+\begin{preliminary}
+%% This generates the ti
+
+%Create a one-page PDF document for the front cover page
+\includepdf[pages=-]{pdg-upc-avant.pdf}
+
+\clearpage
+
+
+\begin{abstractenglish}
+The unprecedented increase in high-dimensional data across sectors like agriculture, healthcare, cybersecurity, seismology, and finance has led to an urgent demand for sophisticated analytical systems capable of processing and exploring large datasets. These datasets, often reaching terabytes in size and involving hundreds or thousands of dimensions, require advanced tools to detect valuable patterns and derive insights.
+
+Vector search is a fundamental operation in numerous data science applications, such as data integration, recommendation systems, large language models, and information retrieval. In these tasks, data such as images, text, or videos are represented as vectors in a high-dimensional space, and the objective is to find the closest object(s) to a query within large collections of vectors. However, as these collections grow exponentially in both size and dimensionality, performing such searches becomes increasingly complex. Although both exact and approximate vector search methods have been developed, they struggle to efficiently scale to the size of today's massive datasets. Traditional techniques, including tree-based and hash-based approaches, have become impractical for handling large-scale vector data collections.
+%containing millions or even billions of high-dimensional vectors.
+
+In recent years, graph-based methods have emerged as a promising alternative for managing large-scale vector search tasks. These methods construct a graph where each node represents a data object, and edges link the most similar objects, leading to improved query efficiency. Nevertheless, despite their advantages, existing graph-based approaches face critical challenges, including (i) a lack of indexing scalability on large datasets, and (ii) low query accuracy on hard datasets and query workloads.
+
+%including (i) scalability when handling vast data collections and (ii) maintaining accuracy on difficult datasets.
+
+This thesis presents several key contributions: (i) the design of a novel scalable approach for in-memory, ng-approximate graph-based vector search that efficiently indexes and searches large datasets by leveraging both tree and graph index structures; (ii) an exhaustive evaluation of state-of-the-art graph-based methods on large-scale datasets, along with the introduction of a new taxonomy that classifies graph-based vector search techniques according to five key paradigms; (iii) a novel merging strategy that combines tree and graph indexes to achieve high performance in both latency- and throughput-optimized settings; and (iv) the development of a new graph-based method that optimizes the indexing and searching of large-scale vector datasets; 
+
+Through these contributions, this thesis aims to advance the scalability and accuracy of graph-based vector search algorithms in large-scale data collections, laying a strong foundation for further research on graph structures for vector search.
+
+\textbf{Key words:} Vector Search, Approximate Nearet Neighbors, Scalable Similarity Search, High-dimensional Vectors, Information Retrieval, Vector Databases.
+\end{abstractenglish}
+
+\newpage
+
+\begin{abstractfrench}
+La croissance sans précédent des données à haute dimension dans des secteurs tels que l'agriculture, la santé, la cybersécurité, la sismologie et la finance a conduit à une demande urgente de systèmes analytiques sophistiqués capables de traiter et d'explorer de grands ensembles de données. Ces ensembles, atteignant souvent des téraoctets de taille et impliquant des centaines ou des milliers de dimensions, nécessitent des outils avancés pour détecter des motifs précieux et en tirer des informations.
+
+La recherche de vecteurs est une opération fondamentale dans de nombreuses applications de science des données, telles que l'intégration de données, les systèmes de recommandation, les grands modèles de langage et la recherche d'information. Dans ces tâches, des données telles que des images, du texte ou des vidéos sont représentées comme des vecteurs dans un espace de haute dimension, et l'objectif est de trouver le(s) objet(s) le(s) plus proche(s) d'une requête au sein de grandes collections de vecteurs. Cependant, à mesure que ces collections croissent de façon exponentielle en taille et en dimensionnalité, effectuer de telles recherches devient de plus en plus complexe. Bien que des méthodes exactes et approximatives de recherche de vecteurs aient été développées, elles peinent à se mettre à l'échelle de manière efficace à la taille des énormes ensembles de données actuels. Les techniques traditionnelles, y compris les approches basées sur les arbres et le hachage, sont devenues impraticables pour gérer de vastes collections de données vectorielles.
+
+Ces dernières années, les méthodes basées sur les graphes ont émergé comme une alternative prometteuse pour gérer les tâches de recherche de vecteurs à grande échelle. Ces méthodes construisent un graphe où chaque nœud représente un objet de données, et les arêtes lient les objets les plus similaires, conduisant à une efficacité accrue des requêtes. Néanmoins, malgré leurs avantages, les approches actuelles basées sur les graphes font face à des défis critiques, incluant (i) un manque d'évolutivité de l'indexation sur de grands ensembles de données, et (ii) une faible précision des requêtes sur des ensembles de données difficiles et des charges de travail de requêtes.
+
+Cette thèse présente plusieurs contributions clés : (i) la conception d'une nouvelle approche évolutive pour la recherche de vecteurs approximative basée sur les graphes en mémoire, qui indexe et recherche efficacement de grands ensembles de données en tirant parti des structures d'index basées sur les arbres et les graphes ; (ii) une évaluation exhaustive des méthodes basées sur les graphes à l'état de l'art sur des ensembles de données à grande échelle, ainsi que l'introduction d'une nouvelle taxonomie qui classe les techniques de recherche de vecteurs basées sur les graphes selon cinq paradigmes clés ; (iii) une nouvelle stratégie de fusion qui combine les index arbres et graphes pour atteindre des performances élevées dans des contextes optimisés pour la latence et le débit ; et (iv) le développement d'une nouvelle méthode basée sur les graphes qui optimise l'indexation et la recherche de grands ensembles de données vectoriels.
+
+Grâce à ces contributions, cette thèse vise à faire progresser l'évolutivité et la précision des algorithmes de recherche de vecteurs basés sur les graphes dans les grandes collections de données, en posant une base solide pour de futures recherches sur les structures de graphes pour la recherche de vecteurs.
+
+\textbf{Mots clés :} Recherche de vecteurs, Voisins les plus proches approximatifs, Recherche de similarité évolutive, Vecteurs de haute dimension, Recherche d'information, Bases de données vectorielles.
+\end{abstractfrench}
+
+
+\begin{abstractarabic}
+أدى الازدياد غير المسبوق في البيانات عالية الأبعاد عبر قطاعات مثل الزراعة، الرعاية الصحية، الأمن السيبراني، علم الزلازل، والمالية إلى طلب عاجل على أنظمة تحليلية متقدمة قادرة على معالجة واستكشاف مجموعات بيانات كبيرة. تتطلب هذه المجموعات، التي غالبًا ما تصل إلى حجم التيرابايت وتضم مئات أو آلاف الأبعاد، أدوات متطورة للكشف عن الأنماط القيمة واستخلاص الرؤى.
+
+تُعدُّ البحث المتجه عملية أساسية في العديد من تطبيقات علوم البيانات، مثل تكامل البيانات، أنظمة التوصية، نماذج اللغة الكبيرة، واسترجاع المعلومات. في هذه المهام، يتم تمثيل البيانات مثل الصور، النصوص، أو مقاطع الفيديو كمتجهات في فضاء عالي الأبعاد، والهدف هو العثور على أقرب كائن أو كائنات إلى استعلام ضمن مجموعات كبيرة من المتجهات. ومع ذلك، مع نمو هذه المجموعات بشكل أُسِّي في كلٍّ من الحجم والأبعاد، يصبح تنفيذ مثل هذه البحوث أكثر تعقيدًا. على الرغم من تطوير طرق البحث المتجه الدقيق والتقريبي، إلا أنها تكافح للتوسع بكفاءة إلى حجم مجموعات البيانات الضخمة اليوم. أصبحت التقنيات التقليدية، بما في ذلك الأساليب القائمة على الأشجار والتجزئة، غير عملية للتعامل مع مجموعات بيانات المتجهات واسعة النطاق.
+
+في السنوات الأخيرة، ظهرت الطرق القائمة على الرسوم البيانية كبديل واعد لإدارة مهام البحث المتجه على نطاق واسع. تبني هذه الطرق رسمًا بيانيًا حيث يمثل كل عقدة كائن بيانات، وتربط الحواف بين الكائنات الأكثر تشابهًا، مما يؤدي إلى تحسين كفاءة الاستعلام. ومع ذلك، على الرغم من مزاياها، تواجه النهج الحالية القائمة على الرسوم البيانية تحديات حرجة، بما في ذلك (i) نقص في قابلية التوسع في الفهرسة على مجموعات البيانات الكبيرة، و(ii) انخفاض دقة الاستعلام على مجموعات البيانات الصعبة وأعباء عمل الاستعلام.
+
+تقدم هذه الأطروحة عدة مساهمات رئيسية: (i) تصميم نهج جديد قابل للتوسع للبحث المتجه التقريبي في الذاكرة قائم على الرسوم البيانية، والذي يقوم بفهرسة والبحث بكفاءة في مجموعات البيانات الكبيرة من خلال الاستفادة من هياكل فهرسة الأشجار والرسوم البيانية؛ (ii) تقييم شامل للطرق الحديثة القائمة على الرسوم البيانية على مجموعات بيانات واسعة النطاق، جنبًا إلى جنب مع تقديم تصنيف جديد يصنّف تقنيات البحث المتجه القائمة على الرسوم البيانية وفقًا لخمسة نماذج رئيسية؛ (iii) استراتيجية دمج جديدة تجمع بين فهارس الأشجار والرسوم البيانية لتحقيق أداء عالٍ في إعدادات محسنة لكلٍّ من زمن الاستجابة ومعدل الإنتاجية؛ و(iv) تطوير طريقة جديدة قائمة على الرسوم البيانية تعمل على تحسين فهرسة والبحث في مجموعات البيانات المتجهة واسعة النطاق.
+
+من خلال هذه المساهمات، تهدف هذه الأطروحة إلى تعزيز قابلية التوسع والدقة لخوارزميات البحث المتجه القائمة على الرسوم البيانية في مجموعات البيانات واسعة النطاق، مما يضع أساسًا قويًا لمزيد من البحوث حول هياكل الرسوم البيانية للبحث المتجه.
+
+\textbf{الكلمات المفتاحية:} البحث المتجه، أقرب الجيران التقريبي، البحث عن التشابه القابل للتوسع، المتجهات عالية الأبعاد، استرجاع المعلومات، قواعد بيانات المتجهات.
+\end{abstractarabic}
+
+\include{tex/resumer}
+%\begin{acknowledgements}
+	
+%Add acknowledgements here.
+
+%\end{acknowledgements}
+
+\include{tex/ackn}
+
+\tableofcontents
+
+\end{preliminary}
+
+
+\listoffigures
+\listoftables
+
+\include{introduction}
+\include{problem}
+\include{related}
+\include{graphfamily}
+\include{elpis}
+\include{elpis2}
+\include{oigas}
+\include{conclusion}
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{unsrt}
+\bibliography{ref,pargis,parisinmemory,icde-tutorial,thesis}  
+
+
+%Create a one-page PDF document for the back cover page
+%\includepdf[page=-]{backcover}
+
+
+\end{document}
